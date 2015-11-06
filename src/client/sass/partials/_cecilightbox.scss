@@ -16,7 +16,6 @@
 	}
 
 	.inside{
-		// background-color: $white;
 		position: relative;
 		width: 100%;
 		height: 100%;
@@ -24,11 +23,30 @@
 
 	.scrolling_container{
 		position: absolute;
-		width: 100%;
-		height: 100%;
-		  //   width: 296px;
-    // height: 296px;
-    // overflow: hidden;
+		@include flex-width( 296 );
+		@include flex-height( 296 );
+    	overflow: hidden;
+    	@include transform(translate3d(-50%, -50%, 0px));
+    	top: 50%;
+		left: 50%;
+		// @include border-radius( 5 );
+
+		&:hover{
+
+			.info{
+				background: none;
+			}
+
+			.scrolling_info{
+				@include flex-top( 106 - 296 );
+				background: $white;
+				border: solid 5px $red;
+				@include flex-padding(10, 10, 10, 10);
+				p{
+					color: $black;
+				}
+			}
+		}
 	}
 
 	.container{
@@ -36,10 +54,8 @@
 		right: 0;
 		top: 0;
 		bottom: 0;
-		transform: translate3d(0px, 0px, 0px);
-		-webkit-transition: 1s ease-in-out;
-		-moz-transition: 1s ease-in-out;
-		-o-transition: 1s ease-in-out;
+		@include transform(translate3d(0px, 0px, 0px));
+		@include transition(1s ease-in-out);
 		position: absolute;
 	}
 
@@ -48,13 +64,65 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
 
 		img{
 			top: 50%;
 			left: 50%;
-			transform: translate3d(-50%, -50%, 0px);
+			@include transform(translate3d(-50%, -50%, 0px));
 			position: relative;
 			height: 100%;
+		}
+	}
+
+	.info{
+	    position: absolute;
+	    bottom: 0px;
+	    @include flex-height( 106 );
+	    width: 100%;
+	    background: url('../assets/images/info.png') repeat;
+
+	    .scrolling_info{
+	    	@include flex-padding(15, 15, 15, 15);
+	    	color: $white;
+	    	@include box-sizing(border-box);
+	    	@include flex-top( 40 );
+	    	width: 100%;
+	    	@include flex-height( 296 );
+	    	position: absolute;
+	    	@include transition(all 0.5s ease-out);
+
+		    p{
+		    	margin: 0px;
+
+		    	&.user{
+		    		font-weight: 600;
+		    		text-transform: uppercase;
+		    		@include font-dimensions(13, 15);
+		    		@include flex-padding(0, 0, 7, 0);
+		    		letter-spacing: 0.06rem;
+		    	}
+
+		    	&.date{
+		    		font-family: 'Gentium Basic', serif;
+		    		@include font-dimensions(12, 15);
+		    		@include flex-padding(0, 0, 4, 0);
+		    		font-style: italic;
+		    	}
+
+		    	&.desc{
+		    		font-weight: 200;
+		    		@include font-dimensions(12, 14);
+		    		font-family: 'Gentium Basic', serif;
+		    	}
+		    }
+
+		    .line{
+		    	display: block;
+			    border-top: solid 2px $aqua;
+			    @include flex-width( 24 );
+			    @include flex-padding(0, 0, 15, 0);
+		    }
 		}
 	}
 
@@ -78,13 +146,13 @@
 		&.left{
 			left: 0px;
 			top: 50%;
-			transform: translate3d(0%, -50%, 0px);
+			@include transform(translate3d(0%, -50%, 0px));
 		}
 
 		&.right{
 			right: 0px;
 			top: 50%;
-			transform: translate3d(0%, -50%, 0px);
+			@include transform(translate3d(0%, -50%, 0px));
 		}
 	}
 }

@@ -1,12 +1,22 @@
 var CeciLigthbox = window.CeciLigthbox || {};
 
+/**
+ * App.
+ * This is the lightbox object
+ * @param _data: image list
+ * @param _id: id of the container in html so we can initialize more than one
+ */
+
 CeciLigthbox.App = function( _data, _id ){
 	
+	//variables
 	this.scroll_position = 0;
 
+	//dom elements
 	this.container = document.querySelector( _id );
 	this.content = this.container.querySelector('.container');
 	this.open = document.querySelector( "#to-cecilightbox" );
+	this.loader = document.querySelector( ".loader" );
 	this.close = this.container.querySelector('.close');
 	this.left = this.container.querySelector('.left');
 	this.right = this.container.querySelector('.right');
@@ -14,21 +24,60 @@ CeciLigthbox.App = function( _data, _id ){
 	this.info_user = this.container.querySelector('#info .user');
 	this.info_desc = this.container.querySelector('#info .desc');
 
-	console.log( _data );
+	//data
 	this.photos = _data.data;
 
+	//create images dom
 	this.photos.forEach(function( photo, index ){
 		this.publishPhoto( photo, index );
 	}.bind(this));
 
+	//update the photo info fo the first one
 	this.updateInfo();
 
+	this.preloadImages();
+
+	//set eventslisteners
 	this.attachEvents();
 };
+
+/**
+ * preloadImages.
+ * Makes sure that when we open the lightbox all images are already preloaded
+ */
+
+CeciLigthbox.App.prototype.preloadImages = function()
+{
+	var numLoaded = 0;
+
+	for( var i = 0; i < this.photos.length; i ++ ){
+		var image = document.createElement('img'); // NOTE should this be scoped?
+		image.src = this.photos[i].images.standard_resolution.url;
+
+		image.onload = function(){
+			numLoaded ++;
+			if( numLoaded === this.photos.length ){
+				var event = document.createEvent('CustomEvent');
+  				event.initCustomEvent('images-preloaded', true, true, {});
+  				this.container.dispatchEvent(event);
+			}
+		}.bind(this);
+
+		image.onerror = function( e ){
+
+		}.bind(this)
+	}
+}
+
+/**
+ * attachEvents.
+ * attach events
+ */
 
 CeciLigthbox.App.prototype.attachEvents = function()
 {
 	this.open.addEventListener('click', this.handleOpen.bind(this));
+	this.container.addEventListener('images-preloaded', this.handleHideSpinner.bind(this));
 	this.close.addEventListener('click', this.handleClose.bind(this));
 	this.left.addEventListener('click', function(){
 		this.slide.call(this, false);
@@ -37,6 +86,19 @@ CeciLigthbox.App.prototype.attachEvents = function()
 		this.slide.call(this, true);
 	}.bind(this));
 };
+
+CeciLigthbox.App.prototype.handleHideSpinner = function()
+{
+	if (this.loader.classList)
+		this.loader.classList.remove('active');
+	else
+		this.loader.className = this.loader.className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+
+	if (this.open.classList)
+		this.open.classList.add('active');
+	else
+		this.open.className += ' ' + 'active';
+}
 
 CeciLigthbox.App.prototype.handleOpen = function()
 {

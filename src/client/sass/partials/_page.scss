@@ -18,15 +18,89 @@ body{
 	text-decoration: none;
 	color: $white;
 	cursor: pointer;
-	display: inline-block;
 	position: relative;
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: 600;
 	letter-spacing: 0.1rem;
+	display: none;
+
+	&.active{
+		display: inline-block;
+	}
 
 	&:hover{
 		@include flex-left( 5 );
 		@include flex-box-shadow( 4, 0, 0, $grey );
 	}
 }
+
+.loader,
+.loader:before,
+.loader:after {
+	background: $aqua;
+	-webkit-animation: load1 1s infinite ease-in-out;
+	animation: load1 1s infinite ease-in-out;
+	@include flex-width( 10 );
+	@include flex-height( 30 );
+}
+
+.loader:before,
+.loader:after {
+	position: absolute;
+	top: 0;
+	content: '';
+}
+
+.loader:before {
+	left: -1.5em;
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+	content: " ";
+	background-color:$aqua;
+}
+
+.loader {
+	margin: 0px auto;
+	font-size: 11px;
+	@include transform(translateZ(0));
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+	display: none;
+
+	&.active{
+		display: block;
+	}
+}
+
+.loader:after {
+	left: 1.5em;
+	content: " ";
+	background-color:$aqua;
+}
+
+@-webkit-keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0 $aqua;
+		@include flex-height( 30 );
+	}
+	40% {
+		box-shadow: 0 -2em $aqua;
+		@include flex-height( 35 );
+	}
+}
+@keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0 $aqua;
+		@include flex-height( 30 );
+	}
+	40% {
+		box-shadow: 0 -2em $aqua;
+		@include flex-height( 35 );
+	}
+}
+

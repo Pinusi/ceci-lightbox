@@ -45,10 +45,6 @@ module.exports = function( grunt ) {
                 files: ['<%= folder.development %>/client/index.html'],
                 tasks: ['copy:html']
             },
-            // templates:{
-            //     files: ['<%= folder.development %>/core/templates/{,*/,**/}*.html'],
-            //     tasks: ['requirejs:dev']
-            // },
             images:{
                 files: ['<%= folder.development %>/client/assets/images/{,*/}*.{png,jpg,gif}'],
                 tasks: ['copy:images']

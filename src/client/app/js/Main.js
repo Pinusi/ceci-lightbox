@@ -1,10 +1,21 @@
 'use strict';
 
+/**
+ * myCeciLigthbox.
+ * Closure in which initialize the main instance of the lightbox
+ */
+
 var myCeciLigthbox = function(){
 
 	var data,
 		dom_ready = false,
 		CeciLigthbox = window.CeciLigthbox || {};
+
+	/**
+	* ready.
+	* Dom is ready?
+	* @param fn: function to execute when ready
+	*/
 
 	var ready = function( fn )
 	{
@@ -22,6 +33,11 @@ var myCeciLigthbox = function(){
 		}
 	}
 
+	/**
+	* onReady.
+	* DOMReady function
+	*/
+
 	var onReady = function()
 	{
 		if( data && dom_ready )
@@ -29,6 +45,11 @@ var myCeciLigthbox = function(){
 			var app = new CeciLigthbox.App( data, "#cecilightbox" );
 		}
 	}
+
+	/**
+	* setData.
+	* save data from outside given that we are using JSONP
+	*/
 
 	var setData = function( _data )
 	{
@@ -43,7 +64,3 @@ var myCeciLigthbox = function(){
 	}
 
 }();
-
-
-// https://instagram.com/oauth/authorize/?client_id=b2503ef1859444c882296f70b3f5f513&redirect_uri=http://0.0.0.0:5000/&response_type=token
-// 21800513.b2503ef.77323556fe40424088b3a00153d93231

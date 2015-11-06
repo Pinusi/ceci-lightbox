@@ -1,0 +1,32 @@
+body{
+	background-color: $white;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.center{
+	left: 50%;
+	top: 50%;
+	position: absolute;
+}
+
+.open{
+	background: $aqua;
+	@include flex-width( 240 );
+	@include flex-margin( -32, 0, 0, -120 );
+	@include font-dimensions(14, 64);
+	@include flex-box-shadow( 9, 0, 0, $grey );
+	text-decoration: none;
+	color: $white;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 600;
+	letter-spacing: 0.1rem;
+
+	&:hover{
+		@include flex-left( 5 );
+		@include flex-box-shadow( 4, 0, 0, $grey );
+	}
+}

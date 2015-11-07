@@ -114,12 +114,10 @@ CeciLigthbox.App.prototype.handleClose = function()
 	else
 		this.container.className = this.container.className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 
-	setTimeout(function(){
-		//put slide rback to initial point
-		this.scroll_position = 0;
-		this.content.style.transform = "translate3d(" + this.scroll_position * 100 + "%, 0px, 0px)";
-		this.content.style.webkitTransform = "translate3d(" + this.scroll_position * 100 + "%, 0px, 0px)";
-	}.bind(this), 500);
+	//put slide rback to initial point
+	this.scroll_position = 0;
+	this.content.style.transform = "translate3d(" + this.scroll_position * 100 + "%, 0px, 0px)";
+	this.content.style.webkitTransform = "translate3d(" + this.scroll_position * 100 + "%, 0px, 0px)";
 };
 
 //OTHER FUNCTIONS
@@ -147,8 +145,8 @@ CeciLigthbox.App.prototype.preloadImages = function()
 		}.bind(this);
 
 		image.onerror = function( e ){
-			console.log( "can't load this image!" );
-		}.bind(this)
+			console.log( "I can't load this image! - Error:" + e );
+		};
 	}
 }
 

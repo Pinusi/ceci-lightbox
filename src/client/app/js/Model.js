@@ -36,12 +36,13 @@ CeciLigthbox.Model.prototype.getData = function(){
 		} 
 		else {
 			// We reached our target server, but it returned an error
+			console.log( "Server available but:" + request.responseText );
 		}
 	}.bind(this);
 
 	request.onerror = function( err ) {
 		// There was a connection error of some sort
-		console.log( err );
+		console.log( "Server NOT available! - Error:" + err );
 	};
 
 	request.send();

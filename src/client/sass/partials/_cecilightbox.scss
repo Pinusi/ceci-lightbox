@@ -11,11 +11,11 @@
 	visibility: hidden;
 	opacity:0;
 	z-index: 1;
-	@include transition(visibility 0s, opacity 0.5s linear);
 
 	&.active{
 		visibility: visible;
 		opacity:1;
+		@include transition(visibility 0s, opacity 0.5s linear);
 	}
 
 	.inside{
@@ -60,7 +60,6 @@
 	}
 
 	.image{
-		overflow: auto;
 		position: absolute;
 		@include flex-width( 296 );
 		@include flex-height( 296 );

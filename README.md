@@ -16,13 +16,13 @@ You can go back and forth through the images.</br>
 P.S. If you need to debug into IE remember to change the db address.</br></br>
 
 **Potential Improvements**</br>
-1. When you reach the min limit or max limit the app loads more photos from the server.
+1. When you reach the min limit or max limit the app loads more photos from the server.</br>
 
 ### Back-end
 1. JSONP: There is a specific commit where you can see the app working with JSONP.
 2. NODEJS: The actual version is running a NodeJS mini-server which takes care of the instagram connection.</br></br>
 
 **Potential Improvements**</br>
-1. Schedule the connection with Instagram and use the server as middleware so you don't hit the max connection limit.
-2. Implement filters for photos.
-3. Implement pagination.
+1. Schedule the connection with Instagram and use the server as middleware so you don't hit the max connection limit.</br>
+2. Implement filters for photos.</br>
+3. Implement pagination.</br>

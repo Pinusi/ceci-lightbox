@@ -1,197 +1,258 @@
 module.exports = function( grunt ) {
 
-    require('load-grunt-tasks')(grunt);
+	var modules = [];
+	var pkg = grunt.file.readJSON('package.json')
 
-    // Time how long tasks take. Can help when optimizing build times
-    require('time-grunt')(grunt);
+	for (var key in pkg.dependencies) {
+		modules.push( key + "/**/*" );
+	}
 
-    grunt.initConfig({
+	require('load-grunt-tasks')(grunt);
 
-        //Folders
-        folder: {
-            development: '../src',
-            distribution: '../dist',
-            temporary: '.tmp'
-        },
+	// Time how long tasks take. Can help when optimizing build times
+	require('time-grunt')(grunt);
 
-        pkg: grunt.file.readJSON('package.json'),
+	grunt.initConfig({
 
-        /**
-         * Watch
-         * https://github.com/gruntjs/grunt-contrib-watch
-         */
-         watch: {
-            scss: {
-                files: [ "<%= folder.development %>/client/sass/{,*/,**/}*.scss" ],
-                tasks: [ "sass" ]
-            },
-            js: {
-                files: [ "<%= folder.development %>/client/app/js/{,*/,**/}*.js" ],
-                tasks: [ "concat" ]
-            },
-            gruntfile: {
-                files: ['Gruntfile.js'],
-                tasks: ['build']
-            },
-            fonts:{
-                files: ['<%= folder.development %>/client/assets/fonts/{,*/}*.*'],
-                tasks: ['copy:fonts']
-            },
-            api:{
-                files: ['<%= folder.development %>/api/{,*/}*.*'],
-                tasks: ['copy:api']
-            },
-            html:{
-                files: ['<%= folder.development %>/client/index.html'],
-                tasks: ['copy:html']
-            },
-            images:{
-                files: ['<%= folder.development %>/client/assets/images/{,*/}*.{png,jpg,gif}'],
-                tasks: ['copy:images']
-            },
-            livereload: {
-                options: {
-                    livereload: '<%= connect.options.livereload %>'
-                },
-                files: [
-                        '<%= folder.distribution %>/{,*/,**/}*.*'
-                    ]
-                }
-            },
+	//Folders
+	folder: {
+		development: '../src',
+		distribution: '../dist',
+		temporary: '.tmp'
+	},
 
-            // The actual grunt server settings
-            connect: {
-                options: {
-                port: 5000,
-                livereload: 35729,
-                 // Change this to '0.0.0.0' to access the server from outside
-                hostname: '0.0.0.0'
-            },
-            livereload: {
-                options: {
-                    open: true,
-                    base: ['<%= folder.distribution %>'],
-                }
-            }
-        },
+	pkg: grunt.file.readJSON('package.json'),
 
-        concat: {
-          options: {
-            separator:  grunt.util.linefeed + ';' + grunt.util.linefeed,
-          },
-          scripts: {
-            src: [
-                    '<%= folder.development %>/client/app/js/Model.js',
-                    '<%= folder.development %>/client/app/js/App.js',
-                    '<%= folder.development %>/client/app/js/Main.js'
-                ],
-            dest: '<%= folder.distribution %>/js/main.min.js',
-          }
-        },
+	/**
+	* Watch
+	* https://github.com/gruntjs/grunt-contrib-watch
+	*/
+	watch: {
+		scss: {
+			files: [ "<%= folder.development %>/client/sass/{,*/,**/}*.scss" ],
+			tasks: [ "sass" ]
+		},
+		js: {
+			files: [ "<%= folder.development %>/client/app/js/{,*/,**/}*.js" ],
+			tasks: [ "concat" ]
+		},
+		gruntfile: {
+			files: ['Gruntfile.js'],
+			tasks: ['build']
+		},
+		fonts:{
+			files: ['<%= folder.development %>/client/assets/fonts/{,*/}*.*'],
+			tasks: ['copy:fonts']
+		},
+		html:{
+			files: ['<%= folder.development %>/client/index.html'],
+			tasks: ['copy:html']
+		},
+		server:{
+			files: ['<%= folder.development %>/server/{,*/,**/}*.*'],
+			tasks: ['copy:server']
+		},
+		images:{
+			files: ['<%= folder.development %>/client/assets/images/{,*/}*.{png,jpg,gif}'],
+			tasks: ['copy:images']
+		},
+		livereload: {
+			options: {
+				livereload: '<%= connect.options.livereload %>'
+			},
+			files: [
+				'<%= folder.distribution %>/client/{,*/,**/}*.*',
+				'.rebooted'
+			]
+		}
+	},
 
-        copy: {
-            fonts: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= folder.development %>/client/assets',
-                    dest: '<%= folder.distribution %>/assets',
-                    src: [
-                        'fonts/{,*/,**/}*.*'
-                    ]
-                }]
-            },
-            images: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= folder.development %>/client/assets',
-                    dest: '<%= folder.distribution %>/assets',
-                    src: [
-                        'images/{,*/,**/}*.*'
-                    ]
-                }]
-            },
-            html: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= folder.development %>/client',
-                    dest: '<%= folder.distribution %>',
-                    src: [
-                        'index.html'
-                    ]
-                }]
-            },
-            api: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= folder.development %>',
-                    dest: '<%= folder.distribution %>',
-                    src: [
-                        'api/{,*/,**/}*.*'
-                    ]
-                }]
-            },
-            favicons: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= folder.development %>',
-                    dest: '<%= folder.distribution %>',
-                    src: [
-                        'favicon.ico'
-                    ]
-                }]
-            }
-        },
+	// The actual grunt server settings
+	connect: {
+		options: {
+			port: 5000,
+			livereload: 35729,
+			// Change this to '0.0.0.0' to access the server from outside
+			hostname: '0.0.0.0'
+		},
+		livereload: {
+			options: {
+				open: true,
+				base: ['<%= folder.distribution %>/client'],
+			}
+		}
+	},
 
-        // /**
-        //  * Sass compilation
-        //  * https://github.com/gruntjs/grunt-contrib-sass
-        //  * auto|file|inline|none
-        //  */
-         sass: {
-            dist: {
-                options: {
-                    trace : true,
-                    style : "compressed",
-                    "sourcemap=none" : ""
-                },
-                files: {
-                    "<%= folder.distribution %>/css/main.css": "<%= folder.development %>/client/sass/main.scss"
-                }
-            }
-        },
+	concat: {
+		options: {
+			separator:  grunt.util.linefeed + ';' + grunt.util.linefeed,
+		},
+		scripts: {
+			src: [
+			'<%= folder.development %>/client/app/js/Model.js',
+			'<%= folder.development %>/client/app/js/App.js',
+			'<%= folder.development %>/client/app/js/Main.js'
+			],
+			dest: '<%= folder.distribution %>/client/js/main.min.js',
+		}
+	},
 
-        // Empties folders to start fresh
-        clean: {
-            build: {
-                src: ['<%= folder.distribution %>']
-            },
-            options:{
-                force: true
-            }
-        }
+	copy: {
+		fonts: {
+			files: [{
+				expand: true,
+				dot: true,
+				cwd: '<%= folder.development %>/client/assets',
+				dest: '<%= folder.distribution %>/client/assets',
+				src: [
+					'fonts/{,*/,**/}*.*'
+				]
+			}]
+		},
+		server: {
+			files: [{
+				expand: true,
+				dot: true,
+				cwd: '<%= folder.development %>/server',
+				dest: '<%= folder.distribution %>/server',
+				src: [
+				'**'
+				]
+			}]
+		},
+		copy_package: {
+			files: [{
+				expand: true,
+				dot: true,
+				cwd: '',
+				dest: '<%= folder.distribution %>/server',
+				src: [
+				'package.json'
+				]
+			}]
+		},
+		modules: {
+			files: [{
+				expand: true,
+				dot: true,
+				cwd: 'node_modules',
+				dest: '<%= folder.distribution %>/server/node_modules',
+				src: modules
+			}]
+		},
+		images: {
+			files: [{
+				expand: true,
+				dot: true,
+				cwd: '<%= folder.development %>/client/assets',
+				dest: '<%= folder.distribution %>/client/assets',
+				src: [
+				'images/{,*/,**/}*.*'
+				]
+			}]
+     	},
+		html: {
+			files: [{
+				expand: true,
+				dot: true,
+				cwd: '<%= folder.development %>/client',
+				dest: '<%= folder.distribution %>/client',
+				src: [
+				'index.html'
+				]
+			}]
+		},
+		favicons: {
+			files: [{
+				expand: true,
+				dot: true,
+				cwd: '<%= folder.development %>/client',
+				dest: '<%= folder.distribution %>/client',
+				src: [
+				'favicon.ico'
+				]
+			}]
+		}
+	},
 
-    } );
+	sass: {
+		dist: {
+			options: {
+				trace : true,
+				style : "compressed",
+				"sourcemap=none" : ""
+			},
+			files: {
+				"<%= folder.distribution %>/client/css/main.css": "<%= folder.development %>/client/sass/main.scss"
+			}
+		}
+	},
+
+	nodemon: {
+		dev: {
+			script: '<%= folder.distribution %>/server/bin/www',
+			options: {
+				nodeArgs: ['--debug'],
+				env: {
+					PORT: '5455'
+				},
+				watch: ['<%= folder.distribution %>'],
+				ignore: ['<%= folder.distribution %>/server/node_modules/**', '<%= folder.distribution %>/server/public/**'],
+				// omit this property if you aren't serving HTML files and 
+				// don't want to open a browser tab on start
+				callback: function (nodemon) {
+					nodemon.on('log', function (event) {
+						console.log(event.colour);
+					});
+
+					// refreshes browser when server reboots
+					nodemon.on('restart', function () {
+						// Delay before server listens on port
+						setTimeout(function() {
+							require('fs').writeFileSync('.rebooted', 'rebooted');
+						}, 2000);
+					});
+				}
+			}
+		}
+	},
+
+	concurrent: {
+		dev: {
+			tasks: ['nodemon', 'watch'], //'node-inspector'
+			options: {
+				logConcurrentOutput: true
+			}
+		}
+	},
+
+	// Empties folders to start fresh
+	clean: {
+		build: {
+			src: ['<%= folder.distribution %>']
+		},
+		options:{
+			force: true
+		}
+	}
+
+});
 
 
-    /**
-     * tasks
-     */
-     grunt.registerTask( "default", [
-        'build',
-        'connect:livereload',
-        "watch"
-    ]);
+	/**
+	* tasks
+	*/
+	grunt.registerTask( "default", [
+		'build',
+		'connect:livereload',
+		'concurrent'
+		]);
 
-    grunt.registerTask('build', [
-        'clean:build',
-        'sass',
-        'concat',
-        'copy'
-    ]);
+	grunt.registerTask('build', [
+		'clean:build',
+		'sass',
+		'concat',
+		'copy'
+		]);
 
- };
+};

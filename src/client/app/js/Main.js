@@ -5,10 +5,9 @@
  * Closure in which initialize the main instance of the lightbox
  */
 
-var myCeciLigthbox = function(){
+(function(){
 
 	var data,
-		dom_ready = false,
 		CeciLigthbox = window.CeciLigthbox || {};
 
 	/**
@@ -21,13 +20,11 @@ var myCeciLigthbox = function(){
 	{
 		if (document.readyState != 'loading')
 		{
-			dom_ready = true;
 			fn();
 		} 
 		else 
 		{
 			document.addEventListener('DOMContentLoaded', function(){
-				dom_ready = true;
 				fn();
 			});
 		}
@@ -40,27 +37,9 @@ var myCeciLigthbox = function(){
 
 	var onReady = function()
 	{
-		if( data && dom_ready )
-		{
-			var app = new CeciLigthbox.App( data, "#cecilightbox" );
-		}
-	}
-
-	/**
-	* setData.
-	* save data from outside given that we are using JSONP
-	*/
-
-	var setData = function( _data )
-	{
-		data = _data;
-		onReady();
+		var app = new CeciLigthbox.App( "#cecilightbox" );
 	}
 
 	ready(onReady);
 
-	return{
-	    setData: setData
-	}
-
-}();
+}());

@@ -9,7 +9,8 @@ var CeciLigthbox = window.CeciLigthbox || {};
 CeciLigthbox.Model = function( _app ){
 
 	this.app = _app;
-	this.data_url = "http://0.0.0.0:5455/api/photos"; //to test in ie with virtualbox change this to localmachine address
+	this.data_url = "http://ceci-instagramconnector.herokuapp.com/api/photos";
+	// this.data_url = "http://0.0.0.0:5455/api/photos"; //to test in ie with virtualbox change this to localmachine address
 
 	//get the data from server
 	this.getData();
